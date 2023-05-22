@@ -7,6 +7,12 @@
 ```
 http://localhost/
 ```
+## Ссылка на репозиторий:
+
+```
+https://github.com/KUArtur/foodgram-project-react
+```
+
 
 ## Описание проекта:
 Проект Foodgram продуктовый помощник - платформа для публикации рецептов.
@@ -98,6 +104,7 @@ docker compose exec backend python manage.py collectstatic --no-input
 Загружаем первоначальные данные(список ингредиентов и тегов) в БД при помощи фикстур
 ```
 docker compose exec backend python manage.py loaddata fixtures.json
+или
 docker compose exec backend python manage.py loaddata --exclude auth.permission --exclude contenttypes fixtures.json
 ```
 В фикстурах есть суперпользователь с почтой
