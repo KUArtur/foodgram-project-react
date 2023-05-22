@@ -136,9 +136,11 @@ class RecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ('id', 'tags', 'author', 'ingredients',
-        'is_favorited', 'is_in_shopping_cart', 'name',
-        'image', 'text', 'cooking_time',)
+        fields = (
+            'id', 'tags', 'author', 'ingredients',
+            'is_favorited', 'is_in_shopping_cart', 'name',
+            'image', 'text', 'cooking_time',
+        )
 
     def get_is_favorited(self, obj):
         """Проверка, находится ли в избранном."""
@@ -146,17 +148,10 @@ class RecipeSerializer(serializers.ModelSerializer):
         # Если пользователь не аноним и подписка существует
         if (user != AnonymousUser()
                 and FavoriteRecipeUser.objects.filter(
-                    user=user, recipe=obj.pk).exists()):
+                    user=user, recipe=obj.pk
+                ).exists()):
             return True
         return False
-
-    # def get_is_favorited(self, obj):
-    #     user = self.context['request'].user.id
-    #     recipe = obj.id
-    #     return FavoriteRecipeUser.objects.filter(
-    #         user_id=user,
-    #         recipe_id=recipe
-    #     ).exists()
 
     def get_is_in_shopping_cart(self, obj):
         user = self.context['request'].user.id
@@ -217,12 +212,16 @@ class RecipePostSerializer(serializers.ModelSerializer):
         for tag in tags:
             recipe.tags.add(tag)
             recipe.save()
+        bulk_list = list()
         for ingredient in ingredients:
-            IngredientRecipe.objects.create(
-                ingredient_id=ingredient.get('id'),
-                amount=ingredient.get('amount'),
-                recipe=recipe
+            bulk_list.append(
+                IngredientRecipe(
+                    ingredient_id=ingredient.get('id'),
+                    amount=ingredient.get('amount'),
+                    recipe=recipe
+                )
             )
+        IngredientRecipe.objects.bulk_create(bulk_list)
         return recipe
 
     def create(self, validated_data):

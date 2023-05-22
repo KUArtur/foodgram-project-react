@@ -1,7 +1,7 @@
 from django.urls import include, path, re_path
 from rest_framework import routers
-from users.views import UserViewSet
-from recipes.views import IngredientViewSet, RecipeViewSet, TagViewSet
+
+from api.views import IngredientViewSet, RecipeViewSet, TagViewSet, UserViewSet
 
 app_name = 'api'
 
@@ -15,4 +15,3 @@ urlpatterns = [
     path('', include(router.urls)),
     re_path(r'^auth/', include('djoser.urls.authtoken')),
 ]
-

@@ -1,5 +1,4 @@
-from django_filters import AllValuesMultipleFilter
-from django_filters import rest_framework as filters
+from django_filters import AllValuesMultipleFilter, rest_framework as filters
 
 from recipes.models import Ingredient, Recipe, Tag
 
@@ -20,16 +19,14 @@ class CustomRecipeFilterSet(filters.FilterSet):
 
     def _bool_filter(self, key, value, queryset, user):
         """Фильтрация для логических ключей."""
-        map_dict = {f'{key}__user': user}
+        map_for_queryset: dict = {f'{key}__user': user}
         if not user.is_anonymous:
             if value:
                 # если ключ True
-                return queryset.filter(**map_dict)
+                return queryset.filter(**map_for_queryset)
             elif value is False:
                 # Если ключ False
-                return queryset.exclude(**map_dict)
-        # неавторизованый пользователь получит все записи
-        # авторизованный получит все записи при нелогическом значении ключа
+                return queryset.exclude(**map_for_queryset)
         return queryset
 
     def filter_is_favorited(self, queryset, name, value):
