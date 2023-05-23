@@ -24,7 +24,7 @@ class CustomRecipeFilterSet(filters.FilterSet):
             if value:
                 # если ключ True
                 return queryset.filter(**map_for_queryset)
-            elif value is False:
+            else:
                 # Если ключ False
                 return queryset.exclude(**map_for_queryset)
         return queryset

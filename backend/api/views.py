@@ -152,8 +152,7 @@ class UserViewSet(viewsets.ModelViewSet):
             user.password = new_password
             user.save()
             return Response(status=status.HTTP_204_NO_CONTENT)
-        else:
-            return Response(
+        return Response(
                 {
                     'current_password':
                         'Введенный и текущий пароли не совпадают'},
