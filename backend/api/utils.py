@@ -22,7 +22,9 @@ def post_delete_relationship_user_with_object(request, pk, model, message):
             recipe=recipe,
             user=request.user
         )
-        text = SubscribeRecipeSerializer(recipe).data
+        text = SubscribeRecipeSerializer(recipe)
+        text.is_valid(raise_exception=True)
+        text = text.data
         return Response(text, status=status.HTTP_201_CREATED)
     obj_recipe = model.objects.filter(
         recipe=recipe,

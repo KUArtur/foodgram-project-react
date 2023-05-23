@@ -180,6 +180,7 @@ class UserViewSet(viewsets.ModelViewSet):
                 'request': request
             },
         )
+        serializer.is_valid()
         return self.get_paginated_response(data=serializer.data)
 
     @action(
